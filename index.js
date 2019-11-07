@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("./config/logger/winston");
 
 const mongodb = require("./config/database/mongodb");
 
@@ -9,6 +10,8 @@ mongodb.on("error", error => {
 const app = express();
 
 app.get("/", (req, res) => {
+  logger.error("olá");
+
   res.send("Ok");
 });
 
