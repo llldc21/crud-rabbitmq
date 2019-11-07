@@ -8,13 +8,24 @@ services:
       - /app/node_modules
     ports:
       - "4000:4000"
+    networks:
+      - core_mongo_rabbit
 
   mongodb:
     image: mongo:latest
     ports:
       - 27017:27017
+    networks:
+      - core_mongo_rabbit
+
   rabbitmq:
     image: rabbitmq:3.5.3-management
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - core_mongo_rabbit
+
+networks:
+  core_mongo_rabbit:
+    driver: bridge
