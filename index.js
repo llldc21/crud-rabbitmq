@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("./config/logger/winston");
+const moment = require("moment-timezone");
 
 const mongodb = require("./config/database/mongodb");
 
@@ -15,4 +16,9 @@ app.get("/", (req, res) => {
   res.send("Ok");
 });
 
-app.listen(4000);
+app.listen(4000, function() {
+  let currentDate = moment
+    .tz("America/Sao_Paulo")
+    .format("YYYY-MM-DD HH:mm:ss");
+  logger.info(`*** Server started at: ${currentDate} ***`);
+});
