@@ -11,7 +11,8 @@
     "winston": "^3.2.1"
   },
   "scripts": {
-    "start": "docker-compose up"
+    "start": "docker-compose up",
+    "test": "jest --bail"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
