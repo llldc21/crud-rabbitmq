@@ -3,6 +3,8 @@ const app = require("../../index");
 const mongoose = require("mongoose");
 const request = require("supertest");
 
+let id
+
 describe("Testando middleware de usuario", () => {
   beforeAll(async () => {
     mongoose.connect("mongodb://localhost:27017/crudDB", {
@@ -69,6 +71,7 @@ describe("Testando middleware de usuario", () => {
     expect(response.body[0]).toHaveProperty("updatedAt");
     expect(response.body[0]).toHaveProperty("_id");
     expect(response.body[0]).toHaveProperty("__v");
+    id = response.body[0]._id
   });
 
   it("Deve atualizar um registo", async () => {
@@ -82,6 +85,20 @@ describe("Testando middleware de usuario", () => {
     const expectResponse = {
       n: 1,
       nModified: 1,
+      ok: 1
+    };
+    expect(response.body).toStrictEqual(expectResponse);
+    expect(response.status).toBe(201);
+  });
+
+  it("Deve deletar um registo", async () => {
+    const response = await request(app).delete(
+      `/delete/${id}`
+    );
+
+    const expectResponse = {
+      n: 1,
+      deletedCount: 1,
       ok: 1
     };
     expect(response.body).toStrictEqual(expectResponse);

@@ -17,4 +17,9 @@ Router.put("/update/:id", async (req, res) => {
   res.status(201).send(response)
 });
 
+Router.delete("/delete/:id", async (req, res) => {
+  const response = await UserMiddleware.deleteUsers(req.params.id);
+  res.status(201).send(response)
+});
+
 module.exports = Router;

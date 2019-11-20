@@ -41,6 +41,16 @@ class UserMiddleware {
       });
     return res;
   }
+
+  async deleteUsers(id) {
+    const res = await this.userModel
+      .deleteOne({ _id: id })
+      .catch(error => {
+        logger.error(`UserMiddleware -> deleteUsers: -> Error: ${error}`);
+        return false;
+      });
+    return res;
+  }
 }
 
 module.exports = new UserMiddleware();
