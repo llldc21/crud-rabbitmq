@@ -57,18 +57,34 @@ describe("Testando middleware de usuario", () => {
 
   it("Deve conter um objeto data", async () => {
     const response = await request(app).get("/list");
-    expect(typeof response.body[0]).toBe(typeof {})
+    expect(typeof response.body[0]).toBe(typeof {});
   });
 
   it("O objeto deve conter dados especificos", async () => {
     const response = await request(app).get("/list");
 
-      expect(response.body[0]).toHaveProperty("username");
-      expect(response.body[0]).toHaveProperty("email");
-      expect(response.body[0]).toHaveProperty("createdAt");
-      expect(response.body[0]).toHaveProperty("updatedAt");
-      expect(response.body[0]).toHaveProperty("_id");
-      expect(response.body[0]).toHaveProperty("__v");
+    expect(response.body[0]).toHaveProperty("username");
+    expect(response.body[0]).toHaveProperty("email");
+    expect(response.body[0]).toHaveProperty("createdAt");
+    expect(response.body[0]).toHaveProperty("updatedAt");
+    expect(response.body[0]).toHaveProperty("_id");
+    expect(response.body[0]).toHaveProperty("__v");
+  });
 
-  })
+  it("Deve atualizar um registo", async () => {
+    const data = {
+      username: "Lucas Lima de Castro Fernandes",
+      email: "teste@test.com"
+    };
+    const response = await request(app)
+      .put("/update/5dd54099633fe51ac8ac9185")
+      .send(data);
+    const expectResponse = {
+      n: 1,
+      nModified: 1,
+      ok: 1
+    };
+    expect(response.body).toStrictEqual(expectResponse);
+    expect(response.status).toBe(201);
+  });
 });

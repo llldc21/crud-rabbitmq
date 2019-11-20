@@ -26,9 +26,19 @@ class UserMiddleware {
 
   async listUsers() {
     const res = await this.userModel.find({}).catch(error => {
-      logger.error(`UserMiddleware -> createUser: -> Error: ${error}`);
+      logger.error(`UserMiddleware -> listUsers: -> Error: ${error}`);
       return false;
     });
+    return res;
+  }
+
+  async updateUsers(body, params) {
+    const res = await this.userModel
+      .updateOne({ _id: params.id }, { body })
+      .catch(error => {
+        logger.error(`UserMiddleware -> updateUsers: -> Error: ${error}`);
+        return false;
+      });
     return res;
   }
 }
