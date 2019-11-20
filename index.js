@@ -1,20 +1,21 @@
 const express = require("express");
 const logger = require("./config/logger/winston");
 const moment = require("moment-timezone");
+const routes = require("./routes");
+const bodyParser = require("body-parser");
 
 const mongodb = require("./config/database/mongodb");
 
 mongodb.on("error", error => {
-  console.log(`Error on connect to MongoDB: ${JSON.stringify(error)}`);
+  logger.error(`Error on connect to MongoDB: ${JSON.stringify(error)}`);
 });
 
 const app = express();
 
-app.get("/", (req, res) => {
-  logger.error("olá");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  res.send("Ok");
-});
+app.use(routes);
 
 app.listen(4000, function() {
   let currentDate = moment
@@ -22,3 +23,5 @@ app.listen(4000, function() {
     .format("YYYY-MM-DD HH:mm:ss");
   logger.info(`*** Server started at: ${currentDate} ***`);
 });
+
+module.exports = app;

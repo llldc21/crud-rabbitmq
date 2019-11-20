@@ -7,14 +7,29 @@ class UserMiddleware {
   }
 
   async createUser({ username, email }) {
-    const res = await this.userModel
-      .create({ username, email })
-      .catch(error => {
-        logger.error(`UserMiddleware -> createUser:11 -> Error: ${error}`);
-        return false;
-      });
-    logger.info(res);
-    return true;
+    if (username && email) {
+      const res = await this.userModel
+        .create({ username, email })
+        .catch(error => {
+          logger.error(`UserMiddleware -> createUser: -> Error: ${error}`);
+          return false;
+        });
+      await logger.info(res);
+      return { username, email };
+    } else {
+      await logger.error(
+        `UserMiddleware -> createUser: -> Error: username and email is null`
+      );
+      return false;
+    }
+  }
+
+  async listUsers() {
+    const res = await this.userModel.find({}).catch(error => {
+      logger.error(`UserMiddleware -> createUser: -> Error: ${error}`);
+      return false;
+    });
+    return res;
   }
 }
 

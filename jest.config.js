@@ -6,7 +6,7 @@ module.exports = {
   // automock: false,
 
   // Stop running tests after `n` failures
-  // bail: 0,
+  bail: true,
 
   // Respect "browser" field in package.json when resolving modules
   // browser: false,
@@ -132,7 +132,7 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: "node",
+  testEnvironment: "node"
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
