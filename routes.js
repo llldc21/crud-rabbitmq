@@ -1,6 +1,7 @@
 const express = require("express");
 const Router = express.Router();
 const UserMiddleware = require("./middlewares/userMiddleware");
+const RabbitmqService = require("./service/rabbitmqService");
 
 Router.post("/create", async (req, res) => {
   const response = await UserMiddleware.createUser(req.body);
@@ -14,12 +15,12 @@ Router.get("/list", async (req, res) => {
 
 Router.put("/update/:id", async (req, res) => {
   const response = await UserMiddleware.updateUsers(req.body, req.params);
-  res.status(201).send(response)
+  res.status(201).send(response);
 });
 
 Router.delete("/delete/:id", async (req, res) => {
   const response = await UserMiddleware.deleteUsers(req.params.id);
-  res.status(201).send(response)
+  res.status(201).send(response);
 });
 
 module.exports = Router;

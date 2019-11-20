@@ -1,9 +1,12 @@
 const UserModel = require("../models/userModel");
 const logger = require("../config/logger/winston");
 
+const RabbitmqService = require("../service/rabbitmqService");
 class UserMiddleware {
   constructor() {
     this.userModel = UserModel;
+    this.rabbitmqService = RabbitmqService;
+    this.url = process.env.RABBIT_URL || "amqp://guest:guest@rabbit:5672";
   }
 
   async createUser({ username, email }) {
@@ -15,6 +18,12 @@ class UserMiddleware {
           return false;
         });
       await logger.info(res);
+      await this.rabbitmqService.run(res, this.url).catch(error => {
+        logger.error(
+          `UserMiddleware -> createUser -> rabbitmqService -> Error: ${error}`
+        );
+        return false;
+      });
       return { username, email };
     } else {
       await logger.error(
@@ -43,12 +52,10 @@ class UserMiddleware {
   }
 
   async deleteUsers(id) {
-    const res = await this.userModel
-      .deleteOne({ _id: id })
-      .catch(error => {
-        logger.error(`UserMiddleware -> deleteUsers: -> Error: ${error}`);
-        return false;
-      });
+    const res = await this.userModel.deleteOne({ _id: id }).catch(error => {
+      logger.error(`UserMiddleware -> deleteUsers: -> Error: ${error}`);
+      return false;
+    });
     return res;
   }
 }

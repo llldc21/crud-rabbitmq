@@ -1,4 +1,5 @@
 const User = require("../../middlewares/userMiddleware");
+const RabbitmqService = require('../../service/rabbitmqService')
 const app = require("../../index");
 const mongoose = require("mongoose");
 const request = require("supertest");
@@ -104,4 +105,10 @@ describe("Testando middleware de usuario", () => {
     expect(response.body).toStrictEqual(expectResponse);
     expect(response.status).toBe(201);
   });
+
+  it("Deve retornar erro com a url errada", async () => {
+    const res = await RabbitmqService.run('Teste', 'amqp://guest:guest@rabbit:5672')
+    console.log(res)
+    expect(res).toBe(res)
+  })
 });

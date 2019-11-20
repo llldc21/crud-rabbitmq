@@ -3,6 +3,8 @@ version: "2"
 services:
   core:
     build: .
+    environment:
+      RABBITMQ_SERVER: rabbitmq
     volumes:
       - .:/app
       - /app/node_modules
